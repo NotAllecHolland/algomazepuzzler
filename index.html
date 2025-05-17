@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>algorithmic maze puzzler</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<head>
+  <meta charset="UTF-8">
+  <title>Algorithmic Maze Solver</title>
+  <link rel="stylesheet" href="./style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<div class="theme-toggle">
+  <input type="checkbox" id="darkModeToggle" class="theme-checkbox">
+  <label for="darkModeToggle" class="theme-label">
+    <span class="theme-icon"></span>
+  </label>
+</div>
+
+<h1>Algorithmic Maze Solver</h1>
+
+<div class="app-container">
+    <div class="drawing-controls">
+        <button class="mode-button active" id="wallModeBtn">Draw Walls</button>
+        <button class="mode-button" id="startModeBtn">Move Start</button>
+        <button class="mode-button" id="endModeBtn">Move End</button>
+        <button class="mode-button" id="eraseModeBtn">Erase Walls</button>
+    </div>
+    
+    <div class="grid-container">
+        <canvas id="mazeCanvas"></canvas>
+        <div class="canvas-overlay" id="canvasOverlay">
+            <div class="overlay-content">
+                <h3>Performance Comparison</h3>
+                <div id="comparisonChartContainer"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="algorithm-controls">
+        <label for="algorithmSelect">Algorithm:</label>
+        <select id="algorithmSelect">
+            <option value="astar">A* Pathfinding</option>
+            <option value="dijkstra">Dijkstra's Algorithm</option>
+            <option value="bfs">Breadth-First Search (BFS)</option>
+        </select>
+        <button id="runAlgorithmBtn" class="run-button">Find Path</button>
+        <button id="clearPathBtn">Clear Path</button>
+        <button id="compareAlgorithmsBtn">Compare Algorithms</button>
+    </div>
+
+    <div class="visualization-controls">
+        <h4>Visualization Controls</h4>
+        <div class="control-group">
+            <label for="speedControl">Animation Speed:</label>
+            <input type="range" id="speedControl" min="1" max="5" value="3" class="speed-slider">
+            <span id="speedLabel">Medium</span>
+        </div>
+        <div class="control-group">
+            <button id="stepModeBtn" class="mode-toggle">Step Mode</button>
+            <button id="stepForwardBtn" class="step-btn" disabled>Step Forward</button>
+            <button id="stepBackwardBtn" class="step-btn" disabled>Step Backward</button>
+            <button id="playPauseBtn" class="step-btn" disabled>Play</button>
+        </div>
+        <div class="control-group">
+            <button id="showStatsBtn" class="info-btn">Show Statistics</button>
+            <button id="helpBtn" class="info-btn">Help & Shortcuts</button>
+        </div>
+    </div>
+
+    <div id="statsPanel" class="info-panel" style="display: none;">
+        <h4>Algorithm Statistics</h4>
+        <div class="stats-content">
+            <div class="stat-item">
+                <span class="stat-label">Algorithm:</span>
+                <span id="statAlgorithm">-</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Path Length:</span>
+                <span id="statPathLength">-</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Nodes Explored:</span>
+                <span id="statNodesExplored">-</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Execution Time:</span>
+                <span id="statExecutionTime">-</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Efficiency:</span>
+                <span id="statEfficiency">-</span>
+            </div>
+        </div>
+        <div class="stats-history" id="statsHistory">
+            <h5>Algorithm History</h5>
+            <table id="historyTable">
+                <thead>
+                    <tr>
+                        <th>Algorithm</th>
+                        <th>Path Length</th>
+                        <th>Nodes Explored</th>
+                        <th>Time (ms)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- History rows will be inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="helpPanel" class="info-panel" style="display: none;">
+        <h4>Help & Keyboard Shortcuts</h4>
+        <div class="help-content">
+            <div class="help-section">
+                <h5>Drawing Controls</h5>
+                <div class="shortcut-grid">
+                    <span>1</span><span>Wall Mode</span>
+                    <span>2</span><span>Move Start</span>
+                    <span>3</span><span>Move End</span>
+                    <span>4</span><span>Erase Mode</span>
+                </div>
+            </div>
+            <div class="help-section">
+                <h5>Maze Controls</h5>
+                <div class="shortcut-grid">
+                    <span>Space</span><span>Random Maze</span>
+                    <span>C</span><span>Clear Walls</span>
+                    <span>R</span><span>Reset</span>
+                    <span>S</span><span>Save Maze</span>
+                    <span>L</span><span>Load Maze</span>
+                </div>
+            </div>
+            <div class="help-section">
+                <h5>Algorithm Controls</h5>
+                <div class="shortcut-grid">
+                    <span>Enter</span><span>Run Algorithm</span>
+                    <span>Esc</span><span>Clear Path</span>
+                    <span>Shift+C</span><span>Compare Algorithms</span>
+                    <span>H</span><span>Toggle Help Panel</span>
+                    <span>Shift+S</span><span>Toggle Stats Panel</span>
+                    <span>T</span><span>Toggle Dark Mode</span>
+                </div>
+            </div>
+            <div class="help-section">
+                <h5>Algorithm Information</h5>
+                <p><strong>A*:</strong> Intelligent pathfinding using heuristics. Fast and optimal.</p>
+                <p><strong>Dijkstra:</strong> Guarantees shortest path. Explores uniformly.</p>
+                <p><strong>BFS:</strong> Level-by-level exploration. Good for unweighted grids.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="maze-controls">
+        <h4>Maze Generation</h4>
+        <div class="controls">
+            <button id="clearWallsBtn">Clear Walls</button>
+            <button id="randomMazeBtn">Random Maze</button>
+            <button id="borderWallsBtn">Border Walls</button>
+            <button id="spiralMazeBtn">Spiral Maze</button>
+            <button id="crossMazeBtn">Cross Maze</button>
+            <button id="scatterMazeBtn">Scatter Maze</button>
+            <button id="resetBtn">Reset</button>
+        </div>
+        <div class="controls">
+            <button id="saveMazeBtn" class="save-load-btn">Save Maze</button>
+            <button id="loadMazeBtn" class="save-load-btn">Load Maze</button>
+        </div>
+    </div>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-color start-color"></div>
+            <span>Start</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color end-color"></div>
+            <span>End</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color wall-color"></div>
+            <span>Wall</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color empty-color"></div>
+            <span>Empty</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color visited-color"></div>
+            <span>Visited</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color current-color"></div>
+            <span>Current</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-color path-color"></div>
+            <span>Path</span>
+        </div>
+    </div>
+    
+    <div class="status" id="status">
+        Ready to draw! Use modes above or keys: 1=Wall, 2=Start, 3=End, 4=Erase, Space=Random, C=Clear, R=Reset
+    </div>
+</div>
+
+<div id="loadModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <h3>Load Saved Maze</h3>
+        <div id="savedMazeList" class="saved-maze-list">
+            <!-- Saved mazes will be listed here -->
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="./script.js"></script>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
